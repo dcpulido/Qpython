@@ -12,6 +12,7 @@ st="ifconfig "+sys.argv[1]
 os.system(st)
 
 # Escuchando conexiones entrantes
+# Pone al script en modo servidor
 sock.listen(1)
  
 
@@ -25,14 +26,14 @@ while True:
  
         # Recibe los datos en trozos y reetransmite
         while True:
-            data = connection.recv(19)
+            data = connection.recv(1000)
             print >>sys.stderr, 'recibido "%s"' % data
-            if data:
-                print >>sys.stderr, 'enviando mensaje de vuelta al cliente'
-                connection.sendall(data)
-            else:
-                print >>sys.stderr, 'no hay mas datos', client_address
-                break
+            #if data:
+             #   print >>sys.stderr, 'enviando confirmacion'
+              #  connection.sendall("recivido")
+            #else:
+             #   print >>sys.stderr, 'no hay mas datos', client_address
+              #  break
              
     finally:
         # Cerrando conexion
