@@ -1,0 +1,9 @@
+<open file '<stderr>', mode 'w' at 0x7fce39b0f1e0> concexion desde ('192.168.1.101', 53490) 
+07:19:18
+ssid: "wifrycleta"    ip_addres: 1694607552 
+0, wifrycleta, [WPA-PSK-CCMP+TKIP][WPA2-PSK-CCMP+TKIP][ESS]
+1, AP11, [WPA2-PSK-CCMP][ESS]
+2, LAB40, [WPA2-PSK-CCMP+TKIP][ESS]
+3, QA, [WPA-PSK-TKIP][ESS]
+::::
+FIN

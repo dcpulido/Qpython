@@ -10,6 +10,11 @@ import time
 import androidhelper
 import os
  
+
+ip_defecto="127.0.0.1"
+puerto_defecto="10000"
+ip_defecto_pokemon=""
+puerto_defecto_pokemon=""
 # Creando un socket TCP/IP
 droid=androidhelper.Android()
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -26,8 +31,9 @@ while flag:
  	print "APP CLIENTE"
 	print "0_Escaneo wifi"
 	print "1_Escaneo gps"
-	print "2_Enviar Informacion a servidor"
-	print "3_Cerrar aplicacion"
+	print "2_Enviar Informacion a server"
+	print "3_Escaneo Pokemon"
+	print "4_Cerrar aplicacion"
 	op=input()
 	
 
@@ -93,9 +99,14 @@ while flag:
 				if len(sys.argv)==1:
 					if ip=="":
 						ip=raw_input("introduce la ip ")
+						puerto=input("puerto")
 				else:
 					ip=sys.argv[1]
-				server_address = (ip, 10000)
+				if ip=="":
+					ip=ip_defecto_pokemon
+				if puerto=="":
+					puerto=puerto_defecto_pokemon
+				server_address = (ip, puerto)
 
 				print >>sys.stderr, 'conectando a %s puerto %s' % server_address
 				sock.connect(server_address)
@@ -106,7 +117,69 @@ while flag:
 			sock.sendall(message)
 		finally:
 			pass
+
 	if op==3:
+		droid.startLocating()
+		print"ESCANEANDO GPS\n"
+		y=0
+		while y<10:
+			sys.stdout.write('.')
+			time.sleep(1)
+			y=y+1
+
+		l = droid.readLocation()
+		pos=""
+		try:
+			print "\n"
+			print "GPS"
+			R =l.result
+			R =R["gps"]
+			Lat= R["latitude"]
+			Lon=R["longitude"]
+			pos = str(Lat) +","+ str(Lon)
+
+		except:
+			pass
+		try:
+			print "\n"
+			print "NETWQORK"
+			R1 =R["network"]
+			Lat1=R1["latitude"]
+			Lon1=R1["longitude"]
+			pos = str(Lat1) +","+ str(Lon1)
+		except:
+			pass
+
+		if pos!="":
+			print pos
+		else:
+			print "mala lectura gps"
+
+		try:
+
+			os.system("clear")
+			if con==False:
+				if len(sys.argv)==1:
+					if ip=="":
+						ip=raw_input("introduce la ip ")
+						puerto=input("puerto")
+				else:
+					ip=sys.argv[1]
+
+				if ip=="":
+					ip=ip_defecto_pokemon
+				if puerto=="":
+					puerto=puerto_defecto_pokemon
+				server_address = (ip, puerto)
+
+				print >>sys.stderr, 'conectando a %s puerto %s' % server_address
+				sock.connect(server_address)
+				con=True
+
+			message = "P"+pos
+			print >>sys.stderr, 'enviando "%s"' % message
+			sock.sendall(message)	
+	if op==4:
 		flag=False
 
 print >>sys.stderr, 'cerrando socket'
